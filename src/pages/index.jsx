@@ -1,7 +1,19 @@
-import { Comp1 } from "@/components/comp1";
+import { Container } from "@/components/Container";
+import { Tabs } from "@/components/Tabs";
+import { TaskContainer } from "@/components/TaskContainer";
+import { useState } from "react";
 
-const index = () => {
-  return <Comp1 />;
+const todoDatas = [];
+
+const HomePage = () => {
+  return (
+    <div>
+      <p>To-Do List</p>
+      <Container todo={todoDatas} />
+      <Tabs />
+      <TaskContainer todo={todoDatas} />
+    </div>
+  );
 };
 
-export default index;
+export default HomePage;
