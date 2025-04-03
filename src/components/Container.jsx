@@ -1,12 +1,20 @@
 import React, { useState } from "react";
+import { Tabs } from "./Tabs";
+import { TaskContainer } from "./TaskContainer";
 
-export const Container = ({ todo, data }) => {
-  const [title, s] = useState("");
+export const Container = ({ taskList, setTaskList }) => {
+  const [taskTitle, setTaskTitle] = useState("");
 
-  const [id, list] = useState(0);
+  //  option state  option, setOPtion all active completed
+  const [option, setOption] = useState("all");
 
   const handleInputValue = (event) => {
-    s(event.target.value);
+    setTaskTitle(event.target.value);
+  };
+
+  const addTask = () => {
+    const newTask = { id: Date.now(), title: taskTitle, completed: false };
+    setTaskList([...taskList, newTask]);
   };
 
   return (
@@ -15,20 +23,17 @@ export const Container = ({ todo, data }) => {
         type="text"
         placeholder="Add new task..."
         onChange={handleInputValue}
+        value={taskTitle}
       />
-      <button
-        onClick={() => {
-          todo.push({});
-          todo[todo.length - 1]["id"] = { id };
-          todo[todo.length - 1]["title"] = { title };
-          todo[todo.length - 1]["isCompleted"] = false;
 
-          list(id + 1);
-          console.log(todo);
-        }}
-      >
-        Add
-      </button>
+      <button onClick={addTask}>Add</button>
+
+      <Tabs option={option} setOption={setOption} />
+      <TaskContainer
+        taskList={taskList}
+        setTaskList={setTaskList}
+        option={option}
+      />
     </div>
   );
 };
