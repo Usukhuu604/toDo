@@ -4,8 +4,6 @@ import { TaskContainer } from "./TaskContainer";
 
 export const Container = ({ taskList, setTaskList }) => {
   const [taskTitle, setTaskTitle] = useState("");
-
-  //  option state  option, setOPtion all active completed
   const [option, setOption] = useState("all");
 
   const handleInputValue = (event) => {
@@ -15,7 +13,14 @@ export const Container = ({ taskList, setTaskList }) => {
   const addTask = () => {
     const newTask = { id: Date.now(), title: taskTitle, completed: false };
     setTaskList([...taskList, newTask]);
+    setTaskTitle(""); //input iin value hoosloh
   };
+
+  const filteredTasks = taskList.filter((task) => {
+    if (option === "active") return !task.completed;
+    if (option === "completed") return task.completed;
+    if (option === "all") return true;
+  });
 
   return (
     <div>
@@ -28,11 +33,11 @@ export const Container = ({ taskList, setTaskList }) => {
 
       <button onClick={addTask}>Add</button>
 
-      <Tabs option={option} setOption={setOption} />
+      <Tabs setOption={setOption} />
       <TaskContainer
         taskList={taskList}
+        filteredTasks={filteredTasks}
         setTaskList={setTaskList}
-        option={option}
       />
     </div>
   );

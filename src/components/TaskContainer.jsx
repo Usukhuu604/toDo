@@ -1,5 +1,5 @@
-export const TaskContainer = ({ taskList, option, setTaskList }) => {
-  if (taskList.length == 0) {
+export const TaskContainer = ({ filteredTasks, taskList, setTaskList }) => {
+  if (filteredTasks.length === 0) {
     return (
       <div>
         <p style={{ color: "grey" }}>No tasks yet. Add one above!</p>
@@ -7,31 +7,31 @@ export const TaskContainer = ({ taskList, option, setTaskList }) => {
     );
   }
 
-  const showFilteredTasks = (lst) => {
-    let filteredTask = lst;
-
-    if (option == "active") {
-      let filteredTask = lst.filter((a) => !a.completed);
-    }
-    if (option == "completed") {
-      let filteredTask = lst.filter((a) => a.completed);
-    }
-    setTaskList(filteredTask);
+  const handleToggle = (id) => {
+    setTaskList(
+      taskList.map((task) =>
+        task.id === id ? { ...task, completed: !task.completed } : task
+      )
+    );
   };
 
-  const completeFunction = () => {};
+  const handleDelete = (id) => {
+    setTaskList(taskList.filter((task) => task.id !== id));
+  };
 
   return (
     <div>
-      {taskList.map((task) => {
-        return (
-          <div style={{ display: "flex", justifyContent: "space-between" }}>
-            <input type="checkbox" onChange={completeFunction} />
-            <p>{task.title}</p>
-            <button>delete</button>
-          </div>
-        );
-      })}
+      {filteredTasks.map((task) => (
+        <div>
+          <input
+            type="checkbox"
+            checked={task.completed}
+            onChange={() => handleToggle(task.id)}
+          />
+          <span>{task.title}</span>
+          <button onClick={() => handleDelete(task.id)}>Delete</button>
+        </div>
+      ))}
     </div>
   );
 };
